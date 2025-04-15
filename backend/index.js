@@ -1,61 +1,26 @@
+// import express from 'express';
+// import dotenv from 'dotenv';
+// import mongoose from 'mongoose';
+// import authRoutes from './router/authrouetr.js';
+// import taskRoutes from './router/taskroter.js';
+// import cors from 'cors';
+
+
 let express=require("express")
+let dotenv=require("dotenv");
 let mongoose=require("mongoose")
-let tasks=require("./task.js")
+let authRoutes=require("./router/authrouetr.js")
+let taskRoutes=require("./router/taskroter.js")
+let cors=require("cors")
+dotenv.config();
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-let app=express()
+mongoose.connect(process.env.MONGO_URI).then(() => console.log('DB Connected'));
 
-mongoose.connect("mongodb://127.0.0.1:27017/school")
-console.log("start")
+app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
 
-let studentSchema=new mongoose.Schema({
-    email:String,
-    password:String
-})
-let user=mongoose.model("students",studentSchema)
-
-
-app.post("/reg",async(req ,res)=>{
-
-    const {email,password} =req.body
-  let existinguser=await user.findOne({email})
-  if(existinguser){
-    return res.json({meassage:"user alrady exsit"})
-  }
-let newuser=new user({email,password})
-newuser.save()
-return res.json({meassage:"user register successfuuly"})
-
-})
-
-app.post("/login",async(req ,res)=>{
-
-    const {email,password} =req.body
-  let users=await user.findOne({email})
-  if(!users){
-    return res.json({meassage:"invalid email"})
-  }
-if(user.password!==password){
-    return res.json({meassage:"innvalid emaul or password"})
-}
-return res.json({meassage:"user login sucessfully"})
-})
-
-app.get("/task:id",async(req ,res)=>{
-let body=req.body
-let data=await new tasks(body)
-let result=data.save()
-
-})
-
-
-app.post("/tasscomplite:id",async(req ,res)=>{
-    let id=req.params.id
-    let data =await tasks.findOne({id})
-    let result=data.save()
-    
-    })
-
-
-app.listen(1000,()=>{
-    console.log("start server")
-})
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
