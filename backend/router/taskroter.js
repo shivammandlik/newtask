@@ -1,7 +1,3 @@
-// import express from 'express';
-// import { getTasks, addTask, markComplete, deleteTask } from '../controller/task.js';
-// import { protect } from '../middleware/authmiddle.js';
-
 
 let express=require("express")
 let {getTasks,addTask,markComplete,deleteTask}=require('./../controller/task.js')

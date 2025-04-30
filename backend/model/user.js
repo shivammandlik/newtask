@@ -1,4 +1,3 @@
-// import mongoose from 'mongoose';
 let mongoose=require("mongoose")
 
 const userSchema = new mongoose.Schema({

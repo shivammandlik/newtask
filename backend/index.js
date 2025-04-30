@@ -1,10 +1,3 @@
-// import express from 'express';
-// import dotenv from 'dotenv';
-// import mongoose from 'mongoose';
-// import authRoutes from './router/authrouetr.js';
-// import taskRoutes from './router/taskroter.js';
-// import cors from 'cors';
-
 
 let express=require("express")
 let dotenv=require("dotenv");

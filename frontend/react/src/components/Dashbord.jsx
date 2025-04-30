@@ -69,45 +69,57 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Task List */}
-          <ul className="list-group">
-            {tasks.length === 0 && (
-              <li className="list-group-item text-center text-muted">No tasks found</li>
-            )}
-            {tasks.map((task) => (
-              <li
-                key={task._id}
-                className={`list-group-item d-flex justify-content-between align-items-center ${
-                  task.status === 'Completed' ? 'list-group-item-success' : ''
-                }`}
-              >
-                <div>
-                  <strong>{task.title}</strong> &nbsp;
-                  <span className={`badge bg-${task.priority === 'High' ? 'danger' : 'secondary'} me-2`}>
-                    {task.priority}
-                  </span>
-                  <span className="badge bg-info">{task.status}</span>
-                </div>
+          {/* Task Table */}
+          <div className="table-responsive">
+            <table className="table table-bordered text-center">
+              <thead className="table-light">
+                <tr>
+                  <th>Title</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.length === 0 ? (
+                  <tr>
+                    <td colSpan="4" className="text-muted">No tasks found</td>
+                  </tr>
+                ) : (
+                  tasks.map((task) => (
+                    <tr key={task._id} className={task.status === 'Completed' ? 'table-success' : ''}>
+                      <td>{task.title}</td>
+                      <td>
+                        <span className={`badge bg-${task.priority === 'High' ? 'danger' : 'secondary'}`}>
+                          {task.priority}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="badge bg-info">{task.status}</span>
+                      </td>
+                      <td>
+                        {task.status === 'Pending' && (
+                          <button
+                            className="btn btn-sm btn-success me-2"
+                            onClick={() => completeTask(task._id)}
+                          >
+                            Mark Done
+                          </button>
+                        )}
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => deleteTask(task._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
 
-                <div>
-                  {task.status === 'Pending' && (
-                    <button
-                      className="btn btn-sm btn-success me-2"
-                      onClick={() => completeTask(task._id)}
-                    >
-                      Mark Done
-                    </button>
-                  )}
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => deleteTask(task._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
